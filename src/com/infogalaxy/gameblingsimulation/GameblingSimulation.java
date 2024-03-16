@@ -17,14 +17,25 @@ public class GameblingSimulation {
 		public static void gamePlay() {
 			Random random = new Random();
 			int[] winAmount = new int[20];
-			int[] looseAmount = new int[20];	
-		
+			int[] looseAmount = new int[20];
+			int[] maxLost = new int[20];
+			int[] maxWon = new int[20];
+			
+			
 			int wonDays = 0;
 			int lostDays = 0;
+			int maxL = 0 ;
+			int maxW = 0 ;
+			int indexL = 0 ;
+			int indexW = 0 ;
+			
 			for(int i = 0; i < 20; i++) {
-				System.out.println("Day: " +(i+1));
+				
 				int winStack = 0;
 				int looseStack = 0;
+				
+				System.out.println("Day: " +(i+1));
+				
 				while(true) {
 					int playStatus = random.nextInt(9) % 2;
 					
@@ -36,10 +47,25 @@ public class GameblingSimulation {
 					
 					if(looseStack == STAKE_PER_DAY / 2) {
 						lostDays++;
+						if(looseStack > winStack) {
+							maxLost[i] = looseStack - winStack ;
+							
+						if (maxL<maxLost[i]) {
+								maxL = maxLost[i];
+								indexL = i+1;
+							}
+						}
 						break;
 					}
 					if(winStack == STAKE_PER_DAY / 2) {
 						wonDays++;
+						if(looseStack < winStack) {
+							maxWon[i]= winStack - looseStack ;
+							if(maxW < maxWon[i]) {
+								indexW = i+1;
+								
+							}
+						}
 						break;
 					}
 					
@@ -50,6 +76,8 @@ public class GameblingSimulation {
 				System.out.println("Win Amount: " +winAmount[i]);
 				System.out.println("------------------------");	
 			}
+			System.out.println(indexL+" is the Unluckiest Day , Lost Rs : "+maxL);
+			System.out.println(indexW+" is the Luckiest Day , Won Rs : "+indexW);
 			System.out.println("Total Days Lost: " +lostDays);
 			System.out.println("Total Days Won: " +wonDays);
 		}
